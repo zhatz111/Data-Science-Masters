@@ -1,0 +1,2 @@
+Starting a virtual environment on macbook
+source .venv/bin/activate
