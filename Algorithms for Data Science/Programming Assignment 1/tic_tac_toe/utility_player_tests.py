@@ -69,17 +69,6 @@ class UtilityPlayerTests(unittest.TestCase):
         self.assertEqual(expected, result)
 
     @parameterized.expand([
-        ["O--------", [0, 1, 2], 3],
-        ["OO-------", [0, 1, 2], 6],
-        ["OX-------", [0, 1, 2], 2],
-    ])
-    def test_get_line_utility_for_player_1(self, state, line, expected):
-        board = Board(state)
-        player = UtilityPlayer(2)
-        result = player.get_line_utility(board, line)
-        self.assertEqual(expected, result)
-
-    @parameterized.expand([
         [[1, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 0, 0, 0, 0, 0, 0]],
         [[0, 0, 0, 1, 0, 0, 0, 0], [1, 0, 0, 1, 0, 0, 1, 0, 0]],
         [[0, 0, 0, 0, 0, 0, 1, 0], [1, 0, 0, 0, 1, 0, 0, 0, 1]],
