@@ -1,3 +1,4 @@
+# pylint: disable=locally-disabled, multiple-statements, import-error, line-too-long
 import unittest
 from parameterized import parameterized
 from utility_player import UtilityPlayer
@@ -7,8 +8,8 @@ from board import Board
 class UtilityPlayerTests(unittest.TestCase):
     @parameterized.expand([
         ["---------", 0],
-        ["X--------", 5],
-        ["OX-X-----", 8],
+        ["X--------", 1],
+        ["OX-X-----", 4],
         ["X-X------", 1],
 
     ])

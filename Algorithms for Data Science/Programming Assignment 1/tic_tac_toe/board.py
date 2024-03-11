@@ -1,3 +1,5 @@
+# pylint: disable=locally-disabled, multiple-statements, import-error, broad-exception-raised
+
 # Represents at tic-tac-toe board
 class Board:
 
@@ -40,7 +42,7 @@ class Board:
     # Returns a list of all open spaces on the board
     def get_open_spaces(self) -> list:
         open_spaces = []
-        for i in range(len(self.spaces)):
+        for i, _ in enumerate(self.spaces):
             if self.spaces[i] == "-":
                 open_spaces.append(i)
         return open_spaces

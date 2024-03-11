@@ -1,3 +1,5 @@
+# pylint: disable=locally-disabled, multiple-statements, import-error, line-too-long
+
 # Import libraries
 from player import Player
 from board import Board
@@ -15,15 +17,15 @@ class ConditionalPlayer(Player):
 
     def get_decisive_move(self, board: Board) -> int:
         for line in board.lines:
-            if line.count('X') == 2 and line.count('-') == 1:
-                return line.index('-')
-            if line.count('O') == 2 and line.count('-') == 1:
-                return line.index('-')
-            return None
+            string = f"{board.spaces[line[0]]}{board.spaces[line[1]]}{board.spaces[line[2]]}"
+            if string.count('X') == 2 and string.count('-') == 1:
+                return line[string.index('-')]
+            if string.count('O') == 2 and string.count('-') == 1:
+                return line[string.index('-')]
+        return None
 
-    def has_decisive_move(self, board):
-        pass
-
-    def get_non_decisive_move(self, board: Board):
-        pass
-
+    def get_non_decisive_move(self, board: Board) -> int:
+        for corner in [0,4,2,6,8]:
+            if board.is_open_space(corner):
+                return corner
+        return board.get_open_spaces()[0]

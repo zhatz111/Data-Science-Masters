@@ -1,12 +1,11 @@
+# pylint: disable=locally-disabled, multiple-statements, import-error, line-too-long, unused-import
+
+import time
 from contextlib import redirect_stdout
-from random_player import RandomPlayer
 from conditional_player import ConditionalPlayer
 from utility_player import UtilityPlayer
-from minimax_player import MinimaxPlayer
-from alpha_beta_player import AlphaBetaPlayer
+from goal_player import GoalPlayer
 from game import Game
-import time
-
 
 # Represents an experiment of running various agents in n games for analysis
 def main():
@@ -16,8 +15,8 @@ def main():
 
     # Set up the players
     # Note: Change this code to analyze different players
-    player1 = RandomPlayer(1)
-    player2 = AlphaBetaPlayer(2)
+    player1 = GoalPlayer(2)
+    player2 = UtilityPlayer(1)
 
     # Specify the number of games (i.e. trials) for the experiment
     number_of_games = 100

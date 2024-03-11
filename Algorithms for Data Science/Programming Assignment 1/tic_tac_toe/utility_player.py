@@ -1,8 +1,8 @@
+# pylint: disable=locally-disabled, multiple-statements, import-error, line-too-long
+
 # Import libraries
 from board import Board
 from conditional_player import ConditionalPlayer
-from argmax import argmax
-
 
 # Represents a tic-tac-toe agent evaluating moves with a utility function
 # Note: this agent inherits from a conditional player
@@ -15,43 +15,9 @@ class UtilityPlayer(ConditionalPlayer):
         move = self.get_decisive_move(board)
         if move is not None:
             return move
-        else:
-            util_lines = self.get_utility_of_lines(board)
-            spaces = self.get_utility_of_spaces(board, util_lines)
-            return spaces.index(max(spaces))
-
-        # score_dict = {}
-        # # for i in range(len(9)):
-        # #     score_dict[i] = 0
-        # for line in board.lines:
-        #     x_moves = 0
-        #     o_moves = 0
-        #     for i in line:
-        #         if board.spaces[i] == "X":
-        #             x_moves += 1
-        #         elif board.spaces[i] == "O":
-        #             o_moves += 1
-        #     X1 = x_moves
-        #     O1 = o_moves
-        #     if not self.is_line_full(board, line):
-        #         score = 3*X1 - O1
-        #         score_dict[line] = score
-        #     # score_dict[line[1]] += score
-        #     # score_dict[line[2]] += score
-
-        # # Sort dictionary by highest score
-        # highest_score_line = max(score_dict, key=score_dict.get)
-        # lowest_score_line = min(score_dict, key=score_dict.get)
-        # if abs(score_dict[highest_score_line]) > abs(score_dict[lowest_score_line]):
-        #     for move in highest_score_line:
-        #         if board.spaces[move] == "-":
-        #             return move
-        # elif abs(score_dict[highest_score_line]) > abs(score_dict[lowest_score_line]):
-        #     for move in lowest_score_line:
-        #         if board.spaces[move] == "-":
-        #             return move
-        # else:
-        #     return board.get_open_spaces()[0]
+        util_lines = self.get_utility_of_lines(board)
+        spaces = self.get_utility_of_spaces(board, util_lines)
+        return spaces.index(max(spaces))
 
     def get_utility_of_lines(self, board: Board) -> list:
         utility_of_spaces = []
@@ -96,7 +62,7 @@ class UtilityPlayer(ConditionalPlayer):
             return True
         else:
             return False
-        
+
     def is_line_full(self, board: Board, line: list):
         blanks = 0
         for i in line:
@@ -106,5 +72,3 @@ class UtilityPlayer(ConditionalPlayer):
             return True
         else:
             return False
-
-

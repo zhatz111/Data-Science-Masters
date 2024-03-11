@@ -1,3 +1,5 @@
+# pylint: disable=locally-disabled, multiple-statements, import-error, line-too-long
+
 import unittest
 from parameterized import parameterized
 from conditional_player import ConditionalPlayer
