@@ -11,6 +11,7 @@ class UtilityPlayer(ConditionalPlayer):
 
     # Gets the next move using an utility function
     # and conditional logic for decisive moves
+    # Running Time: T(n)=O(1)
     def get_next_move(self, board: Board) -> int:
         move = self.get_decisive_move(board)
         if move is not None:
@@ -19,6 +20,7 @@ class UtilityPlayer(ConditionalPlayer):
         spaces = self.get_utility_of_spaces(board, util_lines)
         return spaces.index(max(spaces))
 
+    # Running Time: T(n)=O(1)
     def get_utility_of_lines(self, board: Board) -> list:
         utility_of_spaces = []
         for line in board.lines:
@@ -31,16 +33,18 @@ class UtilityPlayer(ConditionalPlayer):
             utility_of_spaces.append(utility)
         return utility_of_spaces
 
+    # Running Time: T(n)=O(1)
     def get_line_utility(self, board: Board, line: list) -> int:
         x_moves = 0
         o_moves = 0
         for i in line:
-            if board.spaces[i] == "X":
+            if board.spaces[i] == self.mark:
                 x_moves += 1
-            elif board.spaces[i] == "O":
+            elif board.spaces[i] == self.opponent_mark:
                 o_moves += 1
         return 3*x_moves - o_moves
 
+    # Running Time: T(n)=O(1)
     def get_utility_of_spaces(self, board: Board, utility_of_lines: list) -> list:
         utility_of_spaces = {}
         for i in range(9):
@@ -53,6 +57,7 @@ class UtilityPlayer(ConditionalPlayer):
                     utility_of_spaces[i] = -99
         return list(utility_of_spaces.values())
 
+    # Running Time: T(n)=O(1)
     def is_line_empty(self, board: Board, line: list):
         blanks = 0
         for i in line:
@@ -63,6 +68,7 @@ class UtilityPlayer(ConditionalPlayer):
         else:
             return False
 
+    # Running Time: T(n)=O(1)
     def is_line_full(self, board: Board, line: list):
         blanks = 0
         for i in line:
@@ -72,3 +78,6 @@ class UtilityPlayer(ConditionalPlayer):
             return True
         else:
             return False
+        
+    def __str__(self) -> str:
+        return "Utility Based Agent"

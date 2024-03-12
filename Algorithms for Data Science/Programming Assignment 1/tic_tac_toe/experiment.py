@@ -15,8 +15,8 @@ def main():
 
     # Set up the players
     # Note: Change this code to analyze different players
-    player1 = GoalPlayer(2)
-    player2 = UtilityPlayer(1)
+    player1 = GoalPlayer(1)
+    player2 = UtilityPlayer(2)
 
     # Specify the number of games (i.e. trials) for the experiment
     number_of_games = 100
@@ -24,11 +24,14 @@ def main():
     # Create an empty array to store the winners of each game
     winners = []
 
+    player_1_wins = 0
+    player_2_wins = 0
+    draws = 0
     # Loop through each game
     for i in range(number_of_games):
 
         # Create a new game with the two players
-        game = Game(player1, player2)
+        game = Game(player1=player1, player2=player2)
 
         # Disable writing to the console while we play the game
         with redirect_stdout(None):
@@ -51,7 +54,42 @@ def main():
 
     # Print the results of the experiment
     print("")
-    print(f"P1 wins: {player_1_wins}, P2 wins: {player_2_wins} Draws: {draws}")
+    print(f"{str(player1)} wins: {player_1_wins}, {str(player2)} wins: {player_2_wins}, Draws: {draws}")
+    print(f"Elapsed Time: {elapsed_time}")
+
+
+    winners = []
+    player_1_wins = 0
+    player_2_wins = 0
+    draws = 0
+    # Loop through each game
+    for i in range(number_of_games):
+
+        # Create a new game with the two players
+        game2 = Game(player1=player2, player2=player1)
+
+        # Disable writing to the console while we play the game
+        with redirect_stdout(None):
+            winner2 = game2.play()
+
+        # Add the winner to the list of winners
+        winners.append(winner2)
+
+        # Count the wins for each player and the draws
+        player_1_wins = winners.count(1)
+        player_2_wins = winners.count(2)
+        draws = winners.count(None)
+
+        # Print the progress of the experiment (for slow agents)
+        print(f"Running game {i}")
+
+    # Stop the timer and compute the elapsed time
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+
+    # Print the results of the experiment
+    print("")
+    print(f"{str(player1)} wins: {player_1_wins}, {str(player2)} wins: {player_2_wins}, Draws: {draws}")
     print(f"Elapsed Time: {elapsed_time}")
 
 
