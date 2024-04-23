@@ -12,6 +12,7 @@ class RBFNN_2:
         self.w_hat = []
         self.w = []
         self.spread = 0
+        self.predictions = []
 
     def fit(self, X, y, spread=None):
         if spread is None:
@@ -20,11 +21,11 @@ class RBFNN_2:
         n, d = X.shape
         H = np.zeros((n,n))
 
-        for i in range(0,n):
-            for j in range(0,n):
+        for j in range(0,n):
+            for i in range(0,n):
                 W = X[j,:]
                 H[i,j] = np.exp(-(np.linalg.norm(X[i,:]-W))**2 / (2*spread**2))
-        W_hat = np.dot(np.linalg.pinv(H.conj().T),y)
+        W_hat = np.dot(np.dot(np.linalg.pinv(np.dot(H.conj().T, H)),H.conj().T),y)
         # W_hat = np.linalg.pinv(H) * y
         yt = np.dot(H, W_hat)
         y_pred = np.ones((y.shape[0],1))
@@ -56,10 +57,16 @@ class RBFNN_2:
                 y_hat[i] = y_hat[i] + W_hat*np.exp(-(np.linalg.norm(X[i,:]-W))**2 / (2*self.spread**2))
         y_pred = np.ones(y.shape)
         y_pred[y < 0] = -1
+        self.predictions = y_pred
         return y_pred
+    
+    def accuracy_score(self, X, y):
+        return (1 - np.sqrt(np.sum((self.predictions - y)**2))/y.shape[0])*100
 
 
-iris = pd.read_csv("/Users/zachhatzenbeller/Documents/GitHub/Data-Science-Masters/Algorithms for Data Science/HW4/iris.csv")
+# iris = pd.read_csv("/Users/zachhatzenbeller/Documents/GitHub/Data-Science-Masters/Algorithms for Data Science/HW4/iris.csv")
+iris = pd.read_csv(r"C:\Users\zhatz\Documents\GitHub\Data-Science-Masters\Algorithms for Data Science\HW4\iris.csv")
+
 X = iris.iloc[:,:4].values
 y = iris.iloc[:,4].values
 y1 = y.copy()
@@ -77,9 +84,9 @@ y2[y2 == "versicolor"] = 1
 y3[(y3 == "versicolor") | (y3 == "setosa")] = -1
 y3[y3 == "virginica"] = 1
 
-# Standardize data
-# scaler = StandardScaler()
-# X_scaled = scaler.fit_transform(X)
+y1 = y1.reshape(-1,1)
+y2 = y2.reshape(-1,1)
+y3 = y3.reshape(-1,1)
 
 X_test = np.array([
     [5.1,3.5,1.4,0.2],
@@ -108,9 +115,10 @@ y_test = np.array([
 ])
 
 neural_network = RBFNN_2()
-neural_network.fit(X_test,y1.reshape(-1,1))
+neural_network.fit(X[:25],y1[:25])
 # neural_network.classify(X_test)
 print(neural_network.model_error)
 array = neural_network.classify(X)
-print(array)
+accuracy = neural_network.accuracy_score(X, y1)
+print(accuracy)
 print(array[array > 0].shape)
