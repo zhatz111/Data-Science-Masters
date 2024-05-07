@@ -179,18 +179,18 @@ if __name__ == "__main__":
             label=f"{target} raw data",
         )
 
-        # if target == "setosa":
-        #     outlier_index = 43
-        #     ###############
-        #     plt.plot(
-        #         setosa_df[feature1][outlier_index],
-        #         setosa_df[feature2][outlier_index],
-        #         marker="o",
-        #         color="r",
-        #         markersize=12,
-        #         fillstyle="none",
-        #         label="setosa_outlier",
-        #     )
+        if target == "setosa":
+            outlier_index = 43
+            ###############
+            plt.plot(
+                setosa_df[feature1][outlier_index],
+                setosa_df[feature2][outlier_index],
+                marker="o",
+                color="r",
+                markersize=12,
+                fillstyle="none",
+                label="setosa_outlier",
+            )
             ###############
 
         plt.scatter(setosa_mu_X, setosa_mu_Y, c="blue", s=40, label=f"{target} mean")
