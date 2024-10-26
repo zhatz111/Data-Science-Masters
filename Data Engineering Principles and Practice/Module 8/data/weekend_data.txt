@@ -1,0 +1,6 @@
+Smith, Alice took Data Structures (A course on data structures and algorithms) on a weekend
+Smith, Alice took Algorithms (A course on algorithm design and analysis) on a weekend
+Jones, Bob took Database Systems (A course on database design and management) on a weekend
+Jones, Bob took Web Development (A course on building web applications) on a weekend
+Brown, Charlie took Machine Learning (A course on machine learning algorithms and techniques) on a weekend
+Brown, Charlie took Artificial Intelligence (A course on AI fundamentals and applications) on a weekend

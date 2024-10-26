@@ -1,0 +1,54 @@
+{
+  "students": [
+    {
+      "id": 1,
+      "name": "Alice Smith",
+      "age": 25,
+      "courses": ["Data Structures", "Algorithms"]
+    },
+    {
+      "id": 2,
+      "name": "Bob Jones",
+      "age": 22,
+      "courses": ["Database Systems", "Web Development"]
+    },
+    {
+      "id": 3,
+      "name": "Charlie Brown",
+      "age": 28,
+      "courses": ["Machine Learning", "Artificial Intelligence"]
+    }
+  ],
+  "courses": [
+    {
+      "id": 1,
+      "name": "Data Structures",
+      "description": "A course on data structures and algorithms"
+    },
+    {
+      "id": 2,
+      "name": "Algorithms",
+      "description": "A course on algorithm design and analysis"
+    },
+    {
+      "id": 3,
+      "name": "Database Systems",
+      "description": "A course on database design and management"
+    },
+    {
+      "id": 4,
+      "name": "Web Development",
+      "description": "A course on building web applications"
+    },
+    {
+      "id": 5,
+      "name": "Machine Learning",
+      "description": "A course on machine learning algorithms and techniques"
+    },
+    {
+      "id": 6,
+      "name": "Artificial Intelligence",
+      "description": "A course on AI fundamentals and applications"
+    }
+  ]
+}

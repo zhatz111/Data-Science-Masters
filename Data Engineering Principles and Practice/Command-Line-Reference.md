@@ -11,4 +11,6 @@ psql -U jhu -d jhu < "ZHatzenbeller-module6.sql" # Run an SQL file on the postgr
 ```Shell
 docker ps -a #see a list of all containers
 docker run jhu_docker-airflow-jupyter # run a specific container based on Image name
+docker exec -it 63f7865e3d67 airflow webserver # start Airflow webserver
+docker exec -it 63f7865e3d67 airflow scheduler # start Airflow scheduler
 ```
