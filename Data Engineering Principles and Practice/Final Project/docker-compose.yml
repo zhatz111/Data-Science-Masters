@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: final_project_postgres
+    environment:
+      POSTGRES_USER: group
+      POSTGRES_PASSWORD: project
+      POSTGRES_DB: final_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: my_pgadmin_container
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+
+  jupyter:
+    image: jupyter/scipy-notebook:latest
+    container_name: my_jupyter_container
+    environment:
+      JUPYTER_TOKEN: myjupyterpassword
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+      - ./data:/home/jovyan/data
+    depends_on:
+      - postgres
+
+  airflow:
+    image: apache/airflow:2.6.1
+    container_name: my_airflow_container
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://group:project@postgres:5432/final_db
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__WEBSERVER__ENABLE_PROXY_FIX: 'true'
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./plugins:/opt/airflow/plugins
+    depends_on:
+      - postgres
+    command: >
+      bash -c "airflow db init &&
+               airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com &&
+               airflow webserver & airflow scheduler"
+
+volumes:
+  pgdata:
+  dags:
+  logs:
+  plugins:
+
+# Local Host Access
+# Airflow: http://localhost:8081
+# Postgres: localhost:5432
+# PgAdmin: http://localhost:8080
+# Jupyter: http://localhost:8888
