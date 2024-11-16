@@ -6,9 +6,9 @@ services:
       volumes:
           - ./final-api/:/usr/src/app/
       ports: 
-          - 5000:5000
+          - 8001:8001
       environment: 
-          PORT: 5000
+          PORT: 8001
           FLASK_DEBUG: 1
 
   postgres:
