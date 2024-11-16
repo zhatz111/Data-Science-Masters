@@ -87,7 +87,7 @@ volumes:
   plugins:
 
 # Local Host Access
-# api: http://localhost:5000
+# api: http://localhost:8001
 # Airflow: http://localhost:8081
 # PgAdmin: http://localhost:8080
 # Jupyter: http://localhost:8888

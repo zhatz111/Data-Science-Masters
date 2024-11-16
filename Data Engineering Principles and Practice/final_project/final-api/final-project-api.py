@@ -110,7 +110,7 @@ def age_group_data():
             ON
                 t1.state = t2.state AND t1.grouping = t2."Age Group"
             WHERE
-                t1.grouping = '{i}'
+                t1.grouping = '{i}' AND t2.sex = 'All Sexes'
             GROUP BY
                 t1.state,
                 t1.grouping
