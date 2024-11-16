@@ -88,6 +88,7 @@ with DAG(
         # Specify the columns to group by (all columns except 'value')
         group_by_columns = [col for col in census_data_melted.columns if col != 'Population']
         census_data_melted['Population'] = census_data_melted['Population'].str.replace(',', '').astype(int)
+        census_data_melted["Label (Grouping)"] = census_data_melted["Label (Grouping)"].str.replace(" to ", "-")
 
         # Group by the specified columns and sum the 'value' column
         census_result = census_data_melted.groupby(group_by_columns, as_index=False)['Population'].agg("sum")

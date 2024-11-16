@@ -78,23 +78,6 @@ services:
         airflow webserver & airflow scheduler
         airflow dags list | awk '{print $1}' | tail -n +2 | xargs -I {} airflow dags trigger {}
       "
-  
-  # airflow-scheduler:
-  #   image: apache/airflow:2.6.1
-  #   container_name: airflow_scheduler
-  #   environment:
-  #     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://group:project@postgres:5432/final_db
-  #     AIRFLOW__CORE__EXECUTOR: LocalExecutor
-  #     AIRFLOW__CORE__DAGS_FOLDER: ./data:/opt/airflow/data
-  #   volumes:
-  #     - ./airflow/dags:/opt/airflow/dags
-  #     - ./airflow/logs:/opt/airflow/logs
-  #     - ./airflow/plugins:/opt/airflow/plugins
-  #     # - ./airflow/airflow.cfg:/opt/airflow/airflow.cfg
-  #     - ./data:/opt/airflow/data  # Shared data volume
-  #   depends_on:
-  #     - postgres
-  #   command: airflow scheduler
 
 volumes:
   pgdata:
@@ -104,12 +87,12 @@ volumes:
   plugins:
 
 # Local Host Access
+# api: http://localhost:5000
 # Airflow: http://localhost:8081
-# Postgres: localhost:5432
 # PgAdmin: http://localhost:8080
 # Jupyter: http://localhost:8888
-# api: http://localhost:5000 
 
+# Database Credentials
 # database="final_db",
 # host="host.docker.internal",
 # user="group",
