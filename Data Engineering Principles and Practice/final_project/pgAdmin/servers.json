@@ -1,0 +1,15 @@
+{
+    "Servers": {
+      "1": {
+        "Name": "final_db",
+        "Group": "Servers",
+        "Host": "host.docker.internal",
+        "Port": 5432,
+        "MaintenanceDB": "postgres",
+        "Username": "group",
+        "Password": "project",
+        "SSLMode": "prefer"
+      }
+    }
+  }
+  

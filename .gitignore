@@ -66,6 +66,7 @@ target/
 
 # Data
 *.csv
+*.log
 
 # Pycharm
 .idea
