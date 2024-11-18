@@ -1,9 +1,7 @@
 # Import necessary libraries
-from flask import Flask, request, jsonify
-import requests
+from flask import Flask, jsonify
 import psycopg2
 import pandas as pd
-import json
 
 # Initialize a Flask application
 app = Flask(__name__)
@@ -53,12 +51,12 @@ def check_data():
         )
         # Define your queries
         queries = {
-            "Census": "SELECT * FROM covid19.census LIMIT 5;",
-            "Census Total": "SELECT * FROM covid19.census_total LIMIT 5;",
-            "Vaccination Monthly": "SELECT * FROM covid19.vaccinations_total LIMIT 5;",
-            "Vaccination Daily": "SELECT * FROM covid19.vaccination_daily LIMIT 5;",
-            "Daily Covid Death": "SELECT * FROM covid19.covid_death_monthly LIMIT 5;",
-            "Covid Death Total": "SELECT * FROM covid19.covid_death_total LIMIT 5;",
+            "census": "SELECT * FROM covid19.census LIMIT 5;",
+            "census_total": "SELECT * FROM covid19.census_total LIMIT 5;",
+            "vaccinations_total": "SELECT * FROM covid19.vaccinations_total LIMIT 5;",
+            "vaccination_daily": "SELECT * FROM covid19.vaccination_daily LIMIT 5;",
+            "covid_death_monthly": "SELECT * FROM covid19.covid_death_monthly LIMIT 5;",
+            "covid_death_total": "SELECT * FROM covid19.covid_death_total LIMIT 5;",
         }
 
         # Execute queries and collect results
@@ -121,6 +119,70 @@ def age_group_data():
             """
             df = pd.read_sql_query(main_query, conn)
             json_response[i] = df.to_dict(orient="records")
+
+    except pd.errors.DatabaseError as e:
+        json_response = {"Error": str(e)}
+
+    return jsonify(json_response)
+
+
+# Route-check stored topic data in memory
+@app.route("/api/vaccine_ratio_death_rate", methods=["GET"])
+def vaccine_ratio_death_rate():
+    try:
+        conn = psycopg2.connect(
+            database=DB_NAME, user=DB_USER, password=DB_PASS, host=DB_HOST, port=DB_PORT
+        )
+        main_query = """
+        WITH VaccinationData AS (
+            SELECT
+                location AS state,
+                people_vaccinated
+            FROM covid19.vaccinations_total
+        ),
+        PopulationData AS (
+            SELECT
+                state,
+                population AS total_population
+            FROM covid19.census_total
+        ),
+        CovidDeaths AS (
+            SELECT
+                state,
+                SUM("COVID-19 Deaths") AS total_covid_deaths
+            FROM covid19.covid_death_total
+            GROUP BY state
+        ),
+        CalculatedData AS (
+            SELECT
+                v.state,
+                v.people_vaccinated,
+                p.total_population,
+                COALESCE(cd.total_covid_deaths, 0) AS total_covid_deaths,
+                CASE 
+                    WHEN p.total_population > 0 THEN (v.people_vaccinated::FLOAT / p.total_population)
+                    ELSE NULL
+                END AS vaccination_to_population_ratio,
+                CASE 
+                    WHEN p.total_population > 0 THEN (COALESCE(cd.total_covid_deaths, 0)::FLOAT / p.total_population) * 100
+                    ELSE NULL
+                END AS death_rate
+            FROM VaccinationData v
+            INNER JOIN PopulationData p ON v.state = p.state
+            LEFT JOIN CovidDeaths cd ON v.state = cd.state
+        )
+        SELECT
+            state,
+            vaccination_to_population_ratio,
+            death_rate
+        FROM CalculatedData
+        WHERE vaccination_to_population_ratio IS NOT NULL
+        AND death_rate IS NOT NULL
+        ORDER BY vaccination_to_population_ratio DESC;
+        
+        """
+        df = pd.read_sql_query(main_query, conn)
+        json_response = df.to_dict(orient="records")
 
     except pd.errors.DatabaseError as e:
         json_response = {"Error": str(e)}
